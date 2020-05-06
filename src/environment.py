@@ -34,7 +34,7 @@ class Env():
         if is_training:
             self.threshold_arrive = 0.2
         else:
-            self.threshold_arrive = 0.4
+            self.threshold_arrive = 0.5
 
     def getGoalDistace(self):
         # hypot:sqrt
@@ -47,7 +47,7 @@ class Env():
         self.position = odom.pose.pose.position
         orientation = odom.pose.pose.orientation
         q_x, q_y, q_z, q_w = orientation.x, orientation.y, orientation.z, orientation.w
-        # quaternions->rpy yaw:偏航
+        # quaternions->rpy(yaw)
         yaw = round(math.degrees(math.atan2(2 * (q_x * q_y + q_w * q_z), 1 - 2 * (q_y * q_y + q_z * q_z))))
 
         # make sure it's [0,360]
@@ -143,8 +143,23 @@ class Env():
                 target = SpawnModel
                 target.model_name = 'target'  # the same with sdf name
                 target.model_xml = goal_urdf
-                self.goal_position.position.x = random.uniform(-3.6, 3.6)
-                self.goal_position.position.y = random.uniform(-3.6, 3.6)
+
+                x_rand = random.uniform(-3.6, 3.6)
+                y_rand = random.uniform(-3.6, 3.6)
+
+                while((x_rand>1.3 and x_rand<2.7 and y_rand>1.3 and y_rand<2.7) or \
+                    (x_rand>1.3 and x_rand<2.7 and y_rand>-2.7 and y_rand<-1.3) or \
+                    (x_rand>-2.7 and x_rand<-1.3 and y_rand>1.3 and y_rand<2.7) or \
+                    (x_rand>-2.7 and x_rand<-1.3 and y_rand>-2.7 and y_rand<-1.3)):
+                # while(x_rand>-2.7 and x_rand<-1.3):
+                    x_rand = random.uniform(-3.6, 3.6)
+                    y_rand = random.uniform(-3.6, 3.6)
+
+                self.goal_position.position.x = x_rand
+                self.goal_position.position.y = y_rand
+                
+                # self.goal_position.position.x = random.uniform(-3.6, 3.6)
+                # self.goal_position.position.y = random.uniform(-3.6, 3.6)
                 self.goal(target.model_name, target.model_xml, 'namespace', self.goal_position, 'world')
             except (rospy.ServiceException) as e:
                 print("/gazebo/failed to build the target")
@@ -199,8 +214,22 @@ class Env():
             target = SpawnModel
             target.model_name = 'target'  # the same with sdf name
             target.model_xml = goal_urdf
-            self.goal_position.position.x = random.uniform(-3.6, 3.6)
-            self.goal_position.position.y = random.uniform(-3.6, 3.6)
+
+
+            x_rand = random.uniform(-3.6, 3.6)
+            y_rand = random.uniform(-3.6, 3.6)
+
+            while((x_rand>1.3 and x_rand<2.7 and y_rand>1.3 and y_rand<2.7) or \
+                  (x_rand>1.3 and x_rand<2.7 and y_rand>-2.7 and y_rand<-1.3) or \
+                  (x_rand>-2.7 and x_rand<-1.3 and y_rand>1.3 and y_rand<2.7) or \
+                  (x_rand>-2.7 and x_rand<-1.3 and y_rand>-2.7 and y_rand<-1.3)):
+            #while(x_rand>-2.7 and x_rand<-1.3):
+                x_rand = random.uniform(-3.6, 3.6)
+                y_rand = random.uniform(-3.6, 3.6)
+
+            #self.goal_position.position.x = 3.2 #x_rand
+            #self.goal_position.position.y = 0.2 #y_rand
+            
 
             # if -0.3 < self.goal_position.position.x < 0.3 and -0.3 < self.goal_position.position.y < 0.3:
             #     self.goal_position.position.x += 1

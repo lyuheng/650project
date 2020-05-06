@@ -12,7 +12,7 @@ state_dim = 16
 action_dim = 2
 action_linear_max = 0.5  # m/s
 action_angular_max = 0.5  # rad/s
-is_training = True
+is_training = False
 
 
 def main():
@@ -69,7 +69,7 @@ def main():
                     print('Step: %3i' % one_round_step, '| Var: %.2f' % var, '| Time step: %i' % time_step, '|', result)
                     one_round_step = 0
 
-                if done or one_round_step >= 500:
+                if done or one_round_step >= 250:
                     print('Step: %3i' % one_round_step, '| Var: %.2f' % var, '| Time step: %i' % time_step, '|', result)
                     break
 
@@ -82,6 +82,8 @@ def main():
             while True:
                 a = agent.action(state)
                 a[0] = np.clip(a[0], 0., 1.)
+                if(a[0])<0.1: 
+                    a[0] = 0.1
                 a[1] = np.clip(a[1], -0.5, 0.5)
                 state_, r, done, arrive = env.step(a, past_action)
                 past_action = a

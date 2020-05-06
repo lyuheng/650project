@@ -8,7 +8,7 @@ from model import Actor, Critic
 from replaybuffer import ReplayBuffer
 
 REPLAY_BUFFER_SIZE = 100000
-REPLAY_START_SIZE = 100
+REPLAY_START_SIZE = 10000
 TAU = 0.001
 BATCH_SIZE=64
 GAMMA=0.99
@@ -28,10 +28,16 @@ class DDPG:
         self.replay_buffer = ReplayBuffer(REPLAY_BUFFER_SIZE)
         self.time_step = 0
 
+        self.AE.load_state_dict(torch.load(MODEL_DIR+'/obs/actor_340000.pkl'))
+        # self.AT.load_state_dict(torch.load(MODEL_DIR+'/actor_280000.pkl'))
+        # self.CE.load_state_dict(torch.load(MODEL_DIR+'/critic_280000.pkl'))
+        # self.CT.load_state_dict(torch.load(MODEL_DIR+'/critic_280000.pkl'))
+
         self.optimizer_a = torch.optim.Adam(self.AE.parameters(), lr=1e-4)
         self.optimizer_c = torch.optim.Adam(self.CE.parameters(), lr=1e-4)
 
     def train(self):
+        self.AE.train()
         data = self.replay_buffer.get_batch(BATCH_SIZE)
         bs =  np.array([da[0] for da in data])
         ba =  np.array([da[1] for da in data])
@@ -97,10 +103,10 @@ class DDPG:
             self.time_step += 1
             self.train()
 
-        if self.time_step % 10000 == 0 and self.time_step >= 0:
-            torch.save(self.AE.state_dict(), MODEL_DIR + '/actor_{}.pkl'.format(self.time_step))
-            torch.save(self.CE.state_dict(), MODEL_DIR + '/critic_{}.pkl'.format(self.time_step))
-            print('Save model state_dict successfully...')
+        if self.time_step % 10000 == 0 and self.time_step > 0:
+            torch.save(self.AE.state_dict(), MODEL_DIR + '/obs/actor_{}.pkl'.format(self.time_step))
+            torch.save(self.CE.state_dict(), MODEL_DIR + '/obs/critic_{}.pkl'.format(self.time_step))
+            print('Save model state_dict successfully in obs dir...')
 
         return self.time_step
 
