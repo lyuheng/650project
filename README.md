@@ -1,4 +1,4 @@
-# 650 project
+# ese650 Learning In Robotics project
 We trained an agent in Gazebo environment using Deep Deterministic Policy Gradient(DDPG) to control turtlebot to reach the target (green circle) without any collision in a continuous action space. The result shows that agent can successfully reach random target in a 4 * 4 square avoiding unseen different shaped obstacles by taking 10-dimensional sparse range input and target position. \
 Report is available at [https://github.com/lyuheng/650project/blob/master/demo/650report.pdf](https://github.com/lyuheng/650project/blob/master/demo/650report.pdf)
 
