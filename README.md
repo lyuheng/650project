@@ -29,6 +29,6 @@ roslaunch project ddpg_stage_1.launch
 <img width="250" height="250" src="https://github.com/lyuheng/650project/blob/master/demo/moving.gif">
 (10 times speed up)
 
-## Improvent ##
+## Improvement ##
 * Subsitite DDPG to TD3
 * Modify Actor with LSTM
