@@ -30,5 +30,5 @@ roslaunch project ddpg_stage_1.launch
 (10 times speed up)
 
 ## Improvement ##
-* Subsitite DDPG to TD3
-* Modify Actor with LSTM
+* Substitute DDPG with TD3 
+* Add LSTM into Actor
